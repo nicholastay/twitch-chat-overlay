@@ -11,6 +11,14 @@
         <div style="margin-top: 10px;">
             Username: <input onkeyup="updateLink()" id="username" type="text" autocomplete="off"><br><br>
 
+            Overlay theme:
+            <select id="theme" onchange="updateLink()">
+                <option value="dark" selected>dark</option>
+                <option value="stack">stack</option>
+                <option value="ticker">ticker</option>
+            </select>
+            <br>
+
             Show Twitch emotes:
             <input onclick="updateLink()" type="radio" name="twitch_emotes" checked> Yes
             <input id="twitch_no" onclick="updateLink()" type="radio" name="twitch_emotes"> No
@@ -37,6 +45,12 @@
             var user = document.getElementById('username').value;
             if (user) {
                 var args = { username: user };
+
+                // theme
+                var themeSel = document.getElementById('theme');
+                var theme = themeSel.options[themeSel.selectedIndex].text;
+                if (theme !== 'dark')
+                    args.theme = theme;
 
                 if (document.getElementById('twitch_no').checked)
                     args.twitchemotes = 'false';
