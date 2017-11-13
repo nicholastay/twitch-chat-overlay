@@ -16,14 +16,20 @@ client = new tmi.client
 
 client.connect()
 
+# input sanitizer
+escapeHtml = (str) ->
+    div = document.createElement 'div'
+    div.appendChild document.createTextNode(str)
+    return div.innerHTML
+
 client.addListener 'chat', (channel, user, message) ->
     if config.notify.chat
-        event = new CustomEvent('message', {'detail': {user: user, message: emoteParse(message), action: false}});
+        event = new CustomEvent('message', {'detail': {user: user, message: emoteParse(escapeHtml(message)), action: false}});
         document.dispatchEvent(event);
 
 client.addListener 'action', (channel, user, message) ->
     if config.notify.chat
-        event = new CustomEvent('message', {'detail': {user: user, message: emoteParse(message), action: true}});
+        event = new CustomEvent('message', {'detail': {user: user, message: emoteParse(escapeHtml(message)), action: true}});
         document.dispatchEvent(event);
 
 client.addListener 'subscription', (channel, user) ->
