@@ -28,6 +28,7 @@ client = new tmi.client
         debug: true
     connection:
         reconnect: true
+        secure: if location.protocol is 'https:' then true else false
     channels: ['#' + window.chatConfig.username]
 
 client.connect()

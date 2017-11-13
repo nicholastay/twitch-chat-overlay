@@ -26,7 +26,7 @@ Once you've got the CLR plugin installed, you can add it to your scene. In a pop
 
 ## Online Demo
 
-A demo should be live as deployed by `now.sh`, and should be available [here](https://twitch-chat-overlay-uzcuwkrsyn.now.sh). The stability of this service cannot be guaranteed, but it should generally be okay to use.
+A demo should be live as deployed by `now.sh`, and should be available [here](https://twitch-chat-overlay-mhyumwheor.now.sh). The stability of this service cannot be guaranteed, but it should generally be okay to use.
 
 ## Useless Preview
 
