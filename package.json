@@ -5,6 +5,7 @@
   "main": "app.coffee",
   "scripts": {
     "start": "./node_modules/coffee-script/bin/coffee app.coffee",
+    "now-start": "node ./launch.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Michael Owens",
@@ -13,7 +14,6 @@
     "coffee-script": "^1.9.3",
     "connect": "^3.4.0",
     "connect-assets": "^4.8.0",
-    "node-cache": "^4.1.1",
     "serve-static": "^1.10.0"
   }
 }

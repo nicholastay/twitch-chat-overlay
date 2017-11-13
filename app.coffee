@@ -41,4 +41,6 @@ app
             res.end()
     )
 
-server.listen process.env.PORT || 1337
+port = process.env.PORT || 1337
+server.listen port, () ->
+    console.log('Now listening on port ' + port)
