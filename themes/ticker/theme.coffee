@@ -34,6 +34,9 @@ appendMessage = (data) ->
     $row.className = 'message'
     $row.innerHTML = template
 
+    $row.addEventListener 'webkitAnimationEnd', () ->
+        $row.parentNode.removeChild $row
+
     document.querySelector('.messages').appendChild $row
 
 messageLoop = -> appendMessage messageQueue.shift() if messageQueue.length > 0

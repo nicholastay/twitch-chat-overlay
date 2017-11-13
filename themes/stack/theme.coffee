@@ -5,16 +5,13 @@ document.addEventListener 'message', (data) ->
 
 paddedTime = (str) -> if str.length < 2 then '0' + str else str
 
-safeMessage = (str) ->
-    # If there's more than the maximum, remove the top of the stack
-
-    div = document.createElement 'div'
-    div.appendChild document.createTextNode str
-    div.innerHTML
-
+maxMessages = 5
 appendMessage = (data) ->
-    if document.querySelectorAll('.messages > li:not(.hidden)').length == config.maxmessages
-        document.querySelector('.messages > li:not(.hidden)').className += ' hidden'
+    if document.querySelectorAll('.messages > li:not(.hidden)').length == maxMessages
+        hideMsg = document.querySelector('.messages > li:not(.hidden)')
+        hideMsg.className += ' hidden'
+        hideMsg.addEventListener 'webkitAnimationEnd', () ->
+            hideMsg.parentNode.removeChild hideMsg
 
     now = new Date
     h = paddedTime now.getHours().toString()
