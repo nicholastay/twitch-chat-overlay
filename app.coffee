@@ -6,6 +6,8 @@ server = require('http').createServer(app)
 serveStatic = require 'serve-static'
 coffee = require 'coffee-script'
 
+emoteCache = require './emote_cache'
+
 ##
 # Webserver
 ##
@@ -25,6 +27,8 @@ app
         else
             next()
     )
+    .use('/api/emotes/twitch/global', emoteCache 'https://twitchemotes.com/api_cache/v3/global.json')
+    .use('/api/emotes/twitch/subs', emoteCache 'https://twitchemotes.com/api_cache/v3/subscriber.json')
     .use('/themes', serveStatic(path.join process.cwd(), 'themes'))
     .use(serveStatic(path.join process.cwd(), 'public'))
     .use((req, res) ->

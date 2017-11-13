@@ -24,10 +24,10 @@ window.emoteParse = (msg) ->
 
 emoteLoad = ->
     if config.emotes
-        fetchEmotes 'https://twitchemotes.com/global.json', parseTwitchEmotes
+        fetchEmotes '/api/emotes/twitch/global', parseTwitchEmotes
 
     if config.subemotes
-        fetchEmotes 'https://twitchemotes.com/subscriber.json', parseTwitchSubEmotes
+        fetchEmotes '/api/emotes/twitch/subs', parseTwitchSubEmotes
 
     if config.bttvemotes
         fetchEmotes 'https://api.betterttv.net/2/emotes', parseBTTVEmotes
@@ -43,12 +43,12 @@ fetchEmotes = (url, callback) ->
             catch nothing
 
 parseTwitchEmotes = (emotes) ->
-    Object.keys(emotes).forEach (k) -> allEmotes.push code: k, url: emotes[k].url
+    Object.keys(emotes).forEach (k) -> allEmotes.push code: k, url: 'https://static-cdn.jtvnw.net/emoticons/v1/' + emotes[k].id + '/1.0'
 
 parseTwitchSubEmotes = (emotes) ->
     Object.keys(emotes).forEach (k) ->
         Object.keys(emotes[k].emotes).forEach (k2) ->
-            allEmotes.push code: k2, url: emotes[k].emotes[k2]
+            allEmotes.push code: k2.code, url: 'https://static-cdn.jtvnw.net/emoticons/v1/' + k2.id + '/1.0'
 
 parseBTTVEmotes = (data) ->
     data.emotes.forEach (emote) ->

@@ -7,11 +7,10 @@ config =
         hosts: getQueryVariable('hosts') || false
     maxmessages: getQueryVariable('maxmsgs') || 5
 
-client = new irc.client
+client = new tmi.client
     options:
         debug: true
     connection:
-        random: 'chat'
         reconnect: true
     channels: ['#' + config.username]
 
