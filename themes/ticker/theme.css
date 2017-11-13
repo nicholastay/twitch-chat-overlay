@@ -3,6 +3,8 @@ body {
     font-family: 'Exo 2', sans-serif;
     font-weight: 300;
     font-size: 25px;
+    margin: 0;
+    padding: 0;
 }
 
 .time {
@@ -14,7 +16,7 @@ body {
 
     overflow: hidden;
     -webkit-animation: fadeOut 1.5s;
-    -webkit-animation-delay: 2s;
+    -webkit-animation-delay: 0.5s;
     -webkit-animation-timing-function: ease-out;
     -webkit-animation-fill-mode: forwards;
 
