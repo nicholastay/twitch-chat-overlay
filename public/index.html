@@ -27,6 +27,11 @@
             Use BTTV emotes:
             <input id="bttv_yes" onclick="updateLink()" type="radio" name="bttv_emotes"> Yes
             <input onclick="updateLink()" type="radio" name="bttv_emotes" checked> No
+            <br>
+
+            Use FFZ emotes:
+            <input id="ffz_yes" onclick="updateLink()" type="radio" name="ffz_emotes"> Yes
+            <input onclick="updateLink()" type="radio" name="ffz_emotes" checked> No
         </div>
 
         <div style="margin-top: 10px;">
@@ -56,6 +61,8 @@
                     args.twitchemotes = 'false';
                 if (document.getElementById('bttv_yes').checked)
                     args.bttvemotes = 'true';
+                if (document.getElementById('ffz_yes').checked)
+                    args.ffzemotes = 'true';
 
                 str += '/?' + Object.keys(args).map(function(m) { return m + '=' + args[m] }).join('&');
             }

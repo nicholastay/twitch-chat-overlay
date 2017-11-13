@@ -8,6 +8,9 @@ emoteLoad = ->
     if window.chatConfig.emotes.bttv
         fetchEmotes 'https://api.betterttv.net/2/emotes', parseBTTVEmotes
         fetchEmotes 'https://api.betterttv.net/2/channels/' + window.chatConfig.username, parseBTTVEmotes
+    if window.chatConfig.emotes.ffz
+        fetchEmotes 'https://api.frankerfacez.com/v1/set/global', parseGlobalFFZEmotes
+        fetchEmotes 'https://api.frankerfacez.com/v1/room/' + window.chatConfig.username, parseChannelFFZEmotes
 
 fetchEmotes = (url, callback) ->
     fetch(url)
@@ -35,6 +38,19 @@ parseBTTVURL = (tpl, emote) ->
     tpl
         .replace /{{id}}/, emote.id
         .replace /{{image}}/, '1x'
+
+parseGlobalFFZEmotes = (data) ->
+    data.default_sets.forEach (setId) ->
+        parseFFZEmoteSet data.sets[setId]
+
+parseChannelFFZEmotes = (data) ->
+    Object.keys(data.sets).forEach (setId) ->
+        parseFFZEmoteSet data.sets[setId]
+
+parseFFZEmoteSet = (set) ->
+    set.emoticons.forEach (emote) ->
+        customEmotes.push code: emote.name, url: emote.urls["1"]
+
 
 # http://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
 escapeRegExp = (str) -> str.replace /[-\/\\^$*+?.()|[\]{}]/g, '\\$&'

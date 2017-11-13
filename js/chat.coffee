@@ -22,6 +22,7 @@ window.chatConfig =
     emotes:
         twitch: if (getQueryVariable('twitchemotes') == 'false') is true then false else true
         bttv: (getQueryVariable('bttvemotes') == 'true') || false
+        ffz: (getQueryVariable('ffzemotes') == 'true') || false
 
 client = new tmi.client
     options:
