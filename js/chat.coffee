@@ -14,14 +14,14 @@ window.getQueryVariable = (variable) ->
 window.chatConfig =
     username: getQueryVariable('username')
     notify:
-        chat: getQueryVariable('chat') || true
-        subs: getQueryVariable('subs') || false
-        subanniversary: getQueryVariable('subannv') || false
-        hosts: getQueryVariable('hosts') || false
-    maxmessages: getQueryVariable('maxmsgs') || 5
+        chat: (getQueryVariable('chat') == 'true') || true
+        subs: (getQueryVariable('subs') == 'true') || false
+        subanniversary: (getQueryVariable('subannv') == 'true') || false
+        hosts: (getQueryVariable('hosts') == 'true') || false
+    maxmessages: Number(getQueryVariable('maxmsgs')) || 5
     emotes:
-        twitch: if getQueryVariable('twitchemotes') is false then false else true
-        bttv: getQueryVariable('bttvemotes') || false
+        twitch: if (getQueryVariable('twitchemotes') == 'false') is true then false else true
+        bttv: (getQueryVariable('bttvemotes') == 'true') || false
 
 client = new tmi.client
     options:

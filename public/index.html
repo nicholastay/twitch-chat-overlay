@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Twitch Chat Overlay</title>
+    </head>
+    <body>
+        <h1>Twitch Chat Overlay - Setup</h1>
+        <div>Fill in the settings you want to use then copy the link generated into your CLR browser.</div>
+
+        <div style="margin-top: 10px;">
+            Username: <input onkeyup="updateLink()" id="username" type="text" autocomplete="off"><br><br>
+
+            Show Twitch emotes:
+            <input onclick="updateLink()" type="radio" name="twitch_emotes" checked> Yes
+            <input id="twitch_no" onclick="updateLink()" type="radio" name="twitch_emotes"> No
+            <br>
+
+            Use BTTV emotes:
+            <input id="bttv_yes" onclick="updateLink()" type="radio" name="bttv_emotes"> Yes
+            <input onclick="updateLink()" type="radio" name="bttv_emotes" checked> No
+        </div>
+
+        <div style="margin-top: 10px;">
+            Link:
+            <input id="linkout" type="text" readonly size="65">
+            <button id="copylink" type="button" onclick="copyLink()">Copy</button>
+        </div>
+
+        <script>
+        var baseUrl = 'http://localhost:1337'; // change this
+
+        var linkElem = document.getElementById('linkout');
+        function updateLink() {
+            var str = baseUrl + '/chat';
+
+            var user = document.getElementById('username').value;
+            if (user) {
+                var args = { username: user };
+
+                if (document.getElementById('twitch_no').checked)
+                    args.twitchemotes = 'false';
+                if (document.getElementById('bttv_yes').checked)
+                    args.bttvemotes = 'true';
+
+                str += '/?' + Object.keys(args).map(function(m) { return m + '=' + args[m] }).join('&');
+            }
+
+            document.getElementById('linkout').value = str;
+        }
+
+        function copyLink() {
+            linkElem.select();
+            document.execCommand('Copy');
+        }
+
+        updateLink();
+        </script>
+    </body>
+</html>

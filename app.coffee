@@ -27,7 +27,7 @@ app
     )
     .use('/themes', serveStatic(path.join process.cwd(), 'themes'))
     .use(serveStatic(path.join process.cwd(), 'public'))
-    .use((req, res) ->
+    .use('/chat', (req, res) ->
         # https://stackoverflow.com/questions/19029386/node-js-http-get-request-params
         parts = url.parse(req.url, true);
         query = parts.query;
