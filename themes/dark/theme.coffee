@@ -13,7 +13,7 @@ appendMessage = (data) ->
     template = """
         #{if data.badges then "<div class=\"badges\">#{data.badges}</div>" else ""}
         <div class="name">
-            #{data.user.username}
+            #{data.displayName}
         </div>
         <div class="time">#{time}</div>
         <div class="msg">#{data.message}</div>

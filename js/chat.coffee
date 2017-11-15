@@ -50,18 +50,23 @@ escapeHtml = (str) ->
     div.appendChild document.createTextNode(str)
     return div.innerHTML
 
+getDisplayName = (user) ->
+    return user.username if not user['display-name']
+    return user['display-name'] if user.username == user['display-name'].toLowerCase()
+    return "#{user['display-name']} (#{user.username})"
+
 systemMessage = (str) ->
-    event = new CustomEvent('message', {'detail': {user: {username: 'Chat Overlay'}, message: str, action: false}});
+    event = new CustomEvent('message', {'detail': {user: {color: '#00FFFF'}, displayName: 'Chat Overlay', message: str, action: false}});
     document.dispatchEvent(event);
 
 client.addListener 'chat', (channel, user, message) ->
     if window.chatConfig.notify.chat
-        event = new CustomEvent('message', {'detail': {user: user, badges: window.parseBadges(user), message: window.emoteParse(user, escapeHtml(message)), action: false}});
+        event = new CustomEvent('message', {'detail': {user: user, displayName: getDisplayName(user), badges: window.parseBadges(user), message: window.emoteParse(user, escapeHtml(message)), action: false}});
         document.dispatchEvent(event);
 
 client.addListener 'action', (channel, user, message) ->
     if window.chatConfig.notify.chat
-        event = new CustomEvent('message', {'detail': {user: user, badges: window.parseBadges(user), message: window.emoteParse(user, escapeHtml(message)), action: true}});
+        event = new CustomEvent('message', {'detail': {user: user, displayName: getDisplayName(user), badges: window.parseBadges(user), message: window.emoteParse(user, escapeHtml(message)), action: true}});
         document.dispatchEvent(event);
 
 client.addListener 'subscription', (channel, user) ->
