@@ -11,7 +11,10 @@ appendMessage = (data) ->
     m = paddedTime now.getMinutes().toString()
     time = h + ':' + m
     template = """
-        <div class="name">#{data.user.username}</div>
+        #{if data.badges then "<div class=\"badges\">#{data.badges}</div>" else ""}
+        <div class="name">
+            #{data.user.username}
+        </div>
         <div class="time">#{time}</div>
         <div class="msg">#{data.message}</div>
     """

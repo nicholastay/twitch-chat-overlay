@@ -13,6 +13,7 @@ window.getQueryVariable = (variable) ->
 
 window.chatConfig =
     username: getQueryVariable('username')
+    twitchid: null
     notify:
         chat: (getQueryVariable('chat') == 'true') || true
         subs: (getQueryVariable('subs') == 'true') || false
@@ -23,6 +24,15 @@ window.chatConfig =
         twitch: if (getQueryVariable('twitchemotes') == 'false') is true then false else true
         bttv: (getQueryVariable('bttvemotes') == 'true') || false
         ffz: (getQueryVariable('ffzemotes') == 'true') || false
+
+window.fetchJson = (url, callback) ->
+    fetch(url)
+        .then (response) -> return response.json()
+        .then (emoteData) ->
+            # great error handling
+            try
+                callback(emoteData)
+            catch nothing
 
 client = new tmi.client
     options:
@@ -40,14 +50,18 @@ escapeHtml = (str) ->
     div.appendChild document.createTextNode(str)
     return div.innerHTML
 
+systemMessage = (str) ->
+    event = new CustomEvent('message', {'detail': {user: {username: 'Chat Overlay'}, message: str, action: false}});
+    document.dispatchEvent(event);
+
 client.addListener 'chat', (channel, user, message) ->
     if window.chatConfig.notify.chat
-        event = new CustomEvent('message', {'detail': {user: user, message: emoteParse(user, escapeHtml(message)), action: false}});
+        event = new CustomEvent('message', {'detail': {user: user, badges: window.parseBadges(user), message: window.emoteParse(user, escapeHtml(message)), action: false}});
         document.dispatchEvent(event);
 
 client.addListener 'action', (channel, user, message) ->
     if window.chatConfig.notify.chat
-        event = new CustomEvent('message', {'detail': {user: user, message: emoteParse(user, escapeHtml(message)), action: true}});
+        event = new CustomEvent('message', {'detail': {user: user, badges: window.parseBadges(user), message: window.emoteParse(user, escapeHtml(message)), action: true}});
         document.dispatchEvent(event);
 
 client.addListener 'subscription', (channel, user) ->
@@ -66,13 +80,12 @@ client.addListener 'hosted', (channel, user, viewers) ->
         document.dispatchEvent(event);
 
 client.addListener 'connected', (address, port) ->
-    event = new CustomEvent('message', {'detail': {user: {username: 'Chat Overlay'}, message: 'Connected to twitch.tv servers!', action: false}});
-    document.dispatchEvent(event);
+    systemMessage 'Connected to twitch.tv servers!'
 
 client.addListener 'disconnected', (reason) ->
-    event = new CustomEvent('message', {'detail': {user: {username: 'Chat Overlay'}, message: 'You have been disconnected from twitch.tv. (Reason: ' + reason + ').', action: false}});
-    document.dispatchEvent(event);
+    systemMessage 'You have been disconnected from twitch.tv. (Reason: ' + reason + ').'
 
-# client.addListener 'join', (channel, username) ->
-#     event = new CustomEvent('message', {'detail': {user: {username: 'Chat Overlay'}, message: 'Joined your channel chatroom (' + channel + ').', action: false}});
-#     document.dispatchEvent(event);
+client.addListener 'roomstate', (channel, state) ->
+    window.chatConfig.twitchid = state['room-id']
+    systemMessage 'Joined your channel chatroom (' + channel + ').'
+    document.dispatchEvent new CustomEvent('ready')

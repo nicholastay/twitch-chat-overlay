@@ -6,20 +6,11 @@ window.emoteParse = (user, msg) ->
 
 emoteLoad = ->
     if window.chatConfig.emotes.bttv
-        fetchEmotes 'https://api.betterttv.net/2/emotes', parseBTTVEmotes
-        fetchEmotes 'https://api.betterttv.net/2/channels/' + window.chatConfig.username, parseBTTVEmotes
+        window.fetchJson 'https://api.betterttv.net/2/emotes', parseBTTVEmotes
+        window.fetchJson 'https://api.betterttv.net/2/channels/' + window.chatConfig.username, parseBTTVEmotes
     if window.chatConfig.emotes.ffz
-        fetchEmotes 'https://api.frankerfacez.com/v1/set/global', parseGlobalFFZEmotes
-        fetchEmotes 'https://api.frankerfacez.com/v1/room/' + window.chatConfig.username, parseChannelFFZEmotes
-
-fetchEmotes = (url, callback) ->
-    fetch(url)
-        .then (response) -> return response.json()
-        .then (emoteData) ->
-            # great error handling
-            try
-                callback(emoteData)
-            catch nothing
+        window.fetchJson 'https://api.frankerfacez.com/v1/set/global', parseGlobalFFZEmotes
+        window.fetchJson 'https://api.frankerfacez.com/v1/room/' + window.chatConfig.username, parseChannelFFZEmotes
 
 # concat this to the other ones
 getMsgTwitchEmotes = (user, message) ->
@@ -62,4 +53,4 @@ replaceEmotes = (words, msgEmotes) ->
     replacedWords = words.map (word) -> customEmotes.concat(msgEmotes).reduce reducer, word
     replacedWords.join ' '
 
-emoteLoad()
+document.addEventListener 'ready', (() -> emoteLoad()), once: true
