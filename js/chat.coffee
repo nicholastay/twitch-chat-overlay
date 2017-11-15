@@ -56,7 +56,7 @@ getDisplayName = (user) ->
     return "#{user['display-name']} (#{user.username})"
 
 systemMessage = (str) ->
-    event = new CustomEvent('message', {'detail': {user: {color: '#00FFFF'}, displayName: 'Chat Overlay', message: str, action: false}});
+    event = new CustomEvent('message', {'detail': {user: {color: '#f946a7'}, displayName: 'Chat Overlay', badges: "<img src=\"/cog.png\" class=\"badge badge-system\">", message: str, action: false}});
     document.dispatchEvent(event);
 
 client.addListener 'chat', (channel, user, message) ->
