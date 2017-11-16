@@ -1,7 +1,7 @@
 messageQueue = []
 
 document.addEventListener 'message', (data) ->
-    messageQueue.push data.detail # CustomEvents use the .detail field
+    appendMessage data.detail # CustomEvents use the .detail field
 
 document.addEventListener 'subscription', (data) ->
     console.log data.user + ' just subscribed!'
@@ -19,7 +19,3 @@ appendMessage = (data) ->
     $row.innerHTML = template
 
     document.querySelector('.messages').appendChild $row
-
-messageLoop = -> appendMessage messageQueue.shift() if messageQueue.length > 0
-
-setInterval messageLoop, 1000

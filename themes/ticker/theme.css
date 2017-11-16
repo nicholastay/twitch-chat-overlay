@@ -16,7 +16,7 @@ body {
 
     overflow: hidden;
     -webkit-animation: fadeOut 1.5s;
-    -webkit-animation-delay: 0.5s;
+    -webkit-animation-delay: 1.5s;
     -webkit-animation-timing-function: ease-out;
     -webkit-animation-fill-mode: forwards;
 
@@ -28,4 +28,13 @@ body {
     to {
         opacity: 0;
     }
+}
+
+.messages li .badges {
+    display: inline-block;
+    margin-right: -3px;
+}
+
+.messages li .badges img {
+    margin-right: 3px;
 }

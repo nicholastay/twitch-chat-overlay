@@ -1,14 +1,7 @@
 messageQueue = []
 
 document.addEventListener 'message', (data) ->
-    messageQueue.push data.detail # CustomEvents use the .detail field
-
-document.addEventListener 'subscription', (data) ->
-    console.log data.user + ' just subscribed!'
-
-document.addEventListener 'subanniversary', (data) ->
-    console.log data.user.username + ' subbed for ' + data.months + ' month' + (if data.months isnt 1 then 's' else '') + '!'
-
+    appendMessage data.detail # CustomEvents use the .detail field
 
 paddedTime = (str) -> if str.length < 2 then '0' + str else str
 
@@ -25,8 +18,9 @@ appendMessage = (data) ->
     time = h + ':' + m
 
     template = """
+        #{if data.badges then "<span class=\"badges\">#{data.badges}</span>" else ""}
         <span class="time">#{time}</span>
-        <span class="user" style="color: #{data.user.color};">#{data.user.username}</span>:
+        <span class="user" style="color: #{data.user.color};">#{data.displayName}</span>:
         <span class="msg">#{data.message}</span>
     """
 
@@ -38,7 +32,3 @@ appendMessage = (data) ->
         $row.parentNode.removeChild $row
 
     document.querySelector('.messages').appendChild $row
-
-messageLoop = -> appendMessage messageQueue.shift() if messageQueue.length > 0
-
-setInterval messageLoop, 1000
